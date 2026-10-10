@@ -18,12 +18,12 @@ public class Manzana {
 		this.y = y;
 		this.ancho = ancho;
 		this.alto = alto;
-		// this.imagen = Herramientas.cargarImagen("imagenes/manzana.png");
+		this.imagen = Herramientas.cargarImagen("imagenes/manzana.png");
 	}
 	
 	public void dibujar(Entorno entorno) {
-		entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.red);
-		// entorno.dibujarImagen(this.imagen, this.x, this.y, 0,0.182);
+		entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.green);
+		entorno.dibujarImagen(this.imagen, this.x, this.y, 0,0.1);
 	}
 	
 	
