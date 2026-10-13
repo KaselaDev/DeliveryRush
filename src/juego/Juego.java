@@ -89,27 +89,7 @@ public class Juego extends InterfaceJuego
 		}
 		
 		
-		//Movimiento de la moto
-		
-		double xAnterior = this.moto.getX();
-		double yAnterior = this.moto.getY();
-		double anguloAnterior = this.moto.getAngulo();
-		
-		if(entorno.estaPresionada('d')) {
-			moto.moverDerecha();
-		}
-		if(entorno.estaPresionada('a')) {
-			moto.moverIzquierda();
-		}
-		if(entorno.estaPresionada('w')) {
-			moto.moverArriba();
-		}
-		if(entorno.estaPresionada('s')) {
-			moto.moverAbajo();
-		}
-		
-
-
+	
 		//Colision con limite de pantalla
 
 		double mitadAncho = this.moto.getAncho() / 2;
@@ -135,18 +115,46 @@ public class Juego extends InterfaceJuego
 	
 
 
+		//Movimiento de la moto eje x
+		double xAnterior = this.moto.getX();
+		double anguloAnterior = this.moto.getAngulo();
 
+		if(entorno.estaPresionada('d')) {
+			moto.moverDerecha();
+		}
+		if(entorno.estaPresionada('a')) {
+			moto.moverIzquierda();
+		}
+		//Colision eje x
+		for(int i = 0; i < this.cuadra.length; i++) {
+    		if(this.cuadra[i] != null) {
+        		if(choca(this.moto, this.cuadra[i])) {
+            		this.moto.setX(xAnterior);
+            		this.moto.setAngulo(anguloAnterior);
+				}
+			}
+		}
+
+		//Movimiento de la moto eje y
+		double yAnterior = this.moto.getY();
+		anguloAnterior = this.moto.getAngulo();
+
+		if(entorno.estaPresionada('w')) {
+			moto.moverArriba();
+		}
+		if(entorno.estaPresionada('s')) {
+			moto.moverAbajo();
+		}
+
+		//Colision eje y
 		for(int i = 0; i < this.cuadra.length; i++) {
 			if(this.cuadra[i] != null) {
 				if(choca(this.moto, this.cuadra[i])) {
-					this.moto.setX(xAnterior);
 					this.moto.setY(yAnterior);
 					this.moto.setAngulo(anguloAnterior);
 				}
 			}
 		}
-		
-		
 
 
 		moto.dibujar(entorno);
@@ -161,16 +169,17 @@ public class Juego extends InterfaceJuego
 	//Colision moto con las cuadras
 	private boolean choca(Moto m, Manzana a) {
 		//Cada borde de la moto
-		double bordeDerMoto = m.getX() + (m.getAncho() / 2);
-	    double bordeIzqMoto = m.getX() - (m.getAncho() / 2);
-	    double bordeSupMoto = m.getY() - (m.getAlto() / 2);
-	    double bordeInfMoto = m.getY() + (m.getAlto() / 2);
+		double radioMoto = 18;
+		double bordeDerMoto = m.getX() + radioMoto;
+	    double bordeIzqMoto = m.getX() - radioMoto;
+	    double bordeSupMoto = m.getY() - radioMoto;
+	    double bordeInfMoto = m.getY() + radioMoto;
 	    
 	    //Bordes de la cuadra
-	    double bordeDerCuadra = a.getX() + (a.getAncho() / 2);
-	    double bordeIzqCuadra = a.getX() - (a.getAncho() / 2);
+	    double bordeDerCuadra = a.getX() + (a.getAncho() / 2) ;
+	    double bordeIzqCuadra = a.getX() - (a.getAncho() / 2) ;
 	    double bordeArrbCuadra = a.getY() - (a.getAlto() / 2) - 15;
-	    double bordeAbjCuadra = a.getY() + (a.getAlto() / 2);
+	    double bordeAbjCuadra = a.getY() + (a.getAlto() / 2) - 10;
 	    
 	    return bordeDerMoto > bordeIzqCuadra && bordeIzqMoto < bordeDerCuadra && bordeInfMoto > bordeArrbCuadra && bordeSupMoto < bordeAbjCuadra;
 	    
