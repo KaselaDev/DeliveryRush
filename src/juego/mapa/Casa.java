@@ -1,4 +1,4 @@
-package juego;
+package juego.mapa;
 
 import java.awt.Image;
 
