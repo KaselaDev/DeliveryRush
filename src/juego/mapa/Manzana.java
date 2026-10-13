@@ -5,6 +5,7 @@ import java.awt.Image;
 
 import entorno.Entorno;
 import entorno.Herramientas;
+import juego.util.Constantes;
 
 public class Manzana {
 	double x;
@@ -53,19 +54,19 @@ public class Manzana {
 		Casa[] casas = new Casa[64];
 		int c = 0;
 		int k = 0;
-		int ancho = 175;
-		int alto = 100;
-		int separacionAncho = 260;
-		int separacionAlto = 190;
+		int ancho = Constantes.MANZANA_ANCHO;
+		int alto = Constantes.MANZANA_ALTO;
+		int separacionAncho = Constantes.SEPARACION_ANCHO;
+		int separacionAlto = Constantes.SEPARACION_ALTO;
 
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				double posX = 185 + (j * separacionAncho);
-				double posY = 220 + (i * separacionAlto);
+		for(int i = 0; i < Constantes.MAPA_FILAS; i++) {
+			for(int j = 0; j < Constantes.MAPA_COLUMNAS; j++) {
+				double posX = Constantes.MAPA_OFFSET_X + (j * separacionAncho);
+				double posY = Constantes.MAPA_OFFSET_Y + (i * separacionAlto);
 				cuadra[k++] = new Manzana(posX, posY, ancho, alto);
 
-				double offsetX = 45;
-				double offsetY = 25;
+				double offsetX = Constantes.CASA_OFFSET_X;
+				double offsetY = Constantes.CASA_OFFSET_Y;
 
 				// Casa arriba izquierda
 				casas[c++] = new Casa(posX - offsetX, posY - offsetY, 0, 0);

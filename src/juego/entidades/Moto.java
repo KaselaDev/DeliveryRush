@@ -4,6 +4,7 @@ import entorno.Entorno;
 import java.awt.Image;
 import entorno.Herramientas;
 import juego.mapa.Manzana;
+import juego.util.Constantes;
 
 public class Moto {
 	public double x;
@@ -20,7 +21,7 @@ public class Moto {
 	public Moto(double x, double y) {
 		this.x = x;
 		this.y = y;
-		this.velocidad = 2;
+		this.velocidad = Constantes.REPARTIDOR_VELOCIDAD;
 		this.angulo = 0;
 		this.motoArriba = Herramientas.cargarImagen("imagenes/arriba.png");
 		this.motoAbajo = Herramientas.cargarImagen("imagenes/abajo.png");
@@ -95,7 +96,7 @@ public class Moto {
 	public void verificarLimitesPantalla(Entorno entorno) {
 		double mitadAncho = this.getAncho() / 2;
 		double mitadAlto = this.getAlto() / 2;
-		double limiteInterfaz = 100;
+		double limiteInterfaz = Constantes.LIMITE_INTERFAZ;
 
 		//Izquierdo
 		if (this.x < mitadAncho) {
@@ -160,7 +161,7 @@ public class Moto {
 
 	private boolean choca(Moto m, Manzana a) {
 		//Cada borde de la moto
-		double radioMoto = 18;
+		double radioMoto = Constantes.REPARTIDOR_RADIO;
 		double bordeDerMoto = m.getX() + radioMoto;
 		double bordeIzqMoto = m.getX() - radioMoto;
 		double bordeSupMoto = m.getY() - radioMoto;
@@ -169,8 +170,8 @@ public class Moto {
 		//Bordes de la cuadra
 		double bordeDerCuadra = a.getX() + (a.getAncho() / 2) ;
 		double bordeIzqCuadra = a.getX() - (a.getAncho() / 2) ;
-		double bordeArrbCuadra = a.getY() - (a.getAlto() / 2) - 15;
-		double bordeAbjCuadra = a.getY() + (a.getAlto() / 2) - 10;
+		double bordeArrbCuadra = a.getY() - (a.getAlto() / 2) - Constantes.MANZANA_ARRIBA_OFFSET;
+		double bordeAbjCuadra = a.getY() + (a.getAlto() / 2) - Constantes.MANZANA_ABAJO_OFFSET;
 
 		return bordeDerMoto > bordeIzqCuadra && bordeIzqMoto < bordeDerCuadra && bordeInfMoto > bordeArrbCuadra && bordeSupMoto < bordeAbjCuadra;
 	}

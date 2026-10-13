@@ -1,81 +1,53 @@
 package juego;
 
-
-import java.awt.Color;
-
 import entorno.Entorno;
 import entorno.InterfaceJuego;
-import juego.entidades.Moto;
-import juego.mapa.Manzana;
-import juego.mapa.Casa;
+import juego.logica.GestorPantallas;
+import juego.logica.Tablero;
+import juego.pantallas.MenuPantalla;
+import juego.pantallas.JuegoPantalla;
+import juego.util.Constantes;
 
-public class Juego extends InterfaceJuego
-{
-	// El objeto Entorno que controla el tiempo y otros
+public class Juego extends InterfaceJuego {
 	private Entorno entorno;
+	private GestorPantallas gestorPantallas;
+	private Tablero tablero;
+	private MenuPantalla menuPantalla;
+	private JuegoPantalla juegoPantalla;
 
-	private Moto moto;
-	private Manzana[] cuadra;
-	private Casa[] casas;
+	Juego() {
+		this.entorno = new Entorno(this, "DeliveryRush", Constantes.VENTANA_ANCHO, Constantes.VENTANA_ALTO);
 
-	Juego()
-	{
-		// Inicializa el objeto entorno
-		this.entorno = new Entorno(this, "Proyecto para TP", 1150, 900);
+		this.gestorPantallas = new GestorPantallas();
+		this.tablero = new Tablero();
+		this.menuPantalla = new MenuPantalla(entorno);
+		this.juegoPantalla = new JuegoPantalla(entorno, tablero);
 
-		// Inicializar componentes del juego
-		inicializarMoto();
-		inicializarMapa();
+		this.tablero.inicializar();
 
-		// Inicia el juego!
 		this.entorno.iniciar();
 	}
 
-	private void inicializarMoto() {
-		this.moto = new Moto(580, 800);
-	}
-
-	private void inicializarMapa() {
-		Manzana.Mapa mapa = Manzana.generarMapa();
-		this.cuadra = mapa.manzanas;
-		this.casas = mapa.casas;
-	}
-
-	/**
-	 * Durante el juego, el método tick() será ejecutado en cada instante y
-	 * por lo tanto es el método más importante de esta clase. Aquí se debe
-	 * actualizar el estado interno del juego para simular el paso del tiempo
-	 * (ver el enunciado del TP para mayor detalle).
-	 */
-	public void tick()
-	{
-		// Procesamiento de un instante de tiempo
-		dibujarInterfaz();
-		dibujarMapa();
-		moto.verificarLimitesPantalla(entorno);
-		moto.procesarMovimiento(entorno, cuadra);
-		moto.dibujar(entorno);
-	}
-
-	private void dibujarInterfaz() {
-		entorno.dibujarRectangulo(500, 50, 1300, 100, 0, Color.black);
-	}
-
-	private void dibujarMapa() {
-		entorno.colorFondo(Color.gray);
-
-		for(Manzana m : this.cuadra) {
-			m.dibujar(entorno);
+	public void tick() {
+		if (gestorPantallas.esMenu()) {
+			menuPantalla.dibujar();
+			procesarMenu();
+		} else if (gestorPantallas.esJuego()) {
+			juegoPantalla.actualizar();
+			juegoPantalla.dibujar();
+		} else if (gestorPantallas.esGameOver()) {
+			// Pantalla game over
+		} else if (gestorPantallas.esVictoria()) {
+			// Pantalla victoria
 		}
+	}
 
-		for(Casa c : this.casas) {
-			c.dibujar(entorno);
-		}
+	private void procesarMenu() {
+		// Procesamiento del menú - pendiente de implementar
 	}
 
 	@SuppressWarnings("unused")
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Juego juego = new Juego();
 	}
 }
