@@ -3,37 +3,34 @@ package juego.pantallas;
 import entorno.Entorno;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
+import entorno.Herramientas;
+import juego.util.ButtonsMaster;
 
 public class MenuPantalla {
 	private Entorno entorno;
+	private Image fondo;
 
 	public MenuPantalla(Entorno entorno) {
 		this.entorno = entorno;
+		this.fondo = Herramientas.cargarImagen("imagenes/backgroundMenu.png");
 	}
 
 	public void dibujar() {
-		// Fondo
-		entorno.colorFondo(Color.darkGray);
+		// Fondo con imagen
+		if (this.fondo != null) {
+			entorno.dibujarImagen(this.fondo, entorno.ancho() / 2, entorno.alto() / 2, 0, 1.0);
+		} else {
+			entorno.colorFondo(Color.white);
+		}
 
 		// Título
-		entorno.cambiarFont("Arial", 40, Color.white);
+		entorno.cambiarFont("Arial", 40, Color.black);
 		entorno.escribirTexto("DELIVERY RUSH", entorno.ancho() / 2, 200);
 
 		// Botones
-		dibujarBoton("JUGAR", entorno.ancho() / 2, 350);
-		dibujarBoton("SALIR", entorno.ancho() / 2, 450);
-	}
-
-	private void dibujarBoton(String texto, double x, double y) {
-		entorno.cambiarFont("Arial", 24, Color.white);
-		entorno.escribirTexto(texto, x, y);
-	}
-
-	public boolean clickEnJugar(int x, int y) {
-		return y > 320 && y < 380;
-	}
-
-	public boolean clickEnSalir(int x, int y) {
-		return y > 420 && y < 480;
+		// dibujarBoton("JUGAR", entorno.ancho() / 2, 350);
+		// dibujarBoton("SALIR", entorno.ancho() / 2, 450);
+		new ButtonsMaster(entorno, 450, 450, 400, 300, "Jugar");
 	}
 }

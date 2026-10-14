@@ -21,44 +21,9 @@ public class JuegoPantalla {
 		// Fondo del mapa
 		entorno.colorFondo(Color.gray);
 
-		// Dibujar manzanas
-		for (var m : tablero.getManzanas()) {
-			if (m != null) {
-				m.dibujar(entorno);
-			}
-		}
-
-		// Dibujar casas
-		for (var c : tablero.getCasas()) {
-			if (c != null) {
-				c.dibujar(entorno);
-			}
-		}
-
 		// Dibujar moto
 		if (tablero.getMoto() != null) {
 			tablero.getMoto().dibujar(entorno);
-		}
-
-		// Dibujar enemigos
-		for (var e : tablero.getEnemigos()) {
-			if (e != null) {
-				e.dibujar(entorno);
-			}
-		}
-
-		// Dibujar bombas
-		for (var b : tablero.getBombas()) {
-			if (b != null && b.isActiva()) {
-				b.dibujar(entorno);
-			}
-		}
-
-		// Dibujar proyectiles
-		for (var p : tablero.getProyectiles()) {
-			if (p != null && p.isActivo()) {
-				p.dibujar(entorno);
-			}
 		}
 	}
 

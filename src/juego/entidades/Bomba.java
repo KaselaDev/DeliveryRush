@@ -22,4 +22,35 @@ public class Bomba {
 		// this.imagen = Herramientas.cargarImagen("imagenes/bomba.png");
 		this.imagen = null; // Temporalmente null hasta que exista la imagen
 	}
+
+	public void dibujar(Entorno entorno) {
+		if (this.activa && this.imagen != null) {
+			entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.15);
+		}
+	}
+
+	public boolean verificarColision(double objX, double objY, double objRadio) {
+		double distancia = Math.sqrt(Math.pow(this.x - objX, 2) + Math.pow(this.y - objY, 2));
+		return distancia < (this.radio + objRadio);
+	}
+
+	public void explotar() {
+		this.activa = false;
+	}
+
+	public boolean isActiva() {
+		return activa;
+	}
+
+	public int getDanio() {
+		return danio;
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
 }
