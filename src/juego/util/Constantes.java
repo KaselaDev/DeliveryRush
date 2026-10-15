@@ -6,7 +6,7 @@ package juego.util;
 public class Constantes {
 	// Dimensiones de la ventana
 	public static final int VENTANA_ANCHO = 1150;
-	public static final int VENTANA_ALTO = 900;
+	public static final int VENTANA_ALTO = 700;
 	public static final int LIMITE_INTERFAZ = 100;
 
 	// Estados del juego

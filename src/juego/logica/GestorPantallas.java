@@ -6,7 +6,7 @@ public class GestorPantallas {
 	private int pantallaActual;
 
 	public GestorPantallas() {
-		this.pantallaActual = Constantes.PANTALLA_MENU;
+		this.pantallaActual = Constantes.PANTALLA_JUEGO;
 	}
 
 	public void cambiarPantalla(int nuevaPantalla) {

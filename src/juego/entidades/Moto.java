@@ -3,7 +3,6 @@ package juego.entidades;
 import entorno.Entorno;
 import java.awt.Image;
 import entorno.Herramientas;
-import juego.mapa.Manzana;
 import juego.util.Constantes;
 
 public class Moto {
@@ -93,101 +92,9 @@ public class Moto {
 		this.angulo = angulo;
 	}
 
-	public void verificarLimitesPantalla(Entorno entorno) {
-		double mitadAncho = this.getAncho() / 2;
-		double mitadAlto = this.getAlto() / 2;
-		double limiteInterfaz = Constantes.LIMITE_INTERFAZ;
-
-		//Izquierdo
-		if (this.x < mitadAncho) {
-			this.x = mitadAncho;
-		}
-		//Derecho
-		if (this.x > entorno.ancho() - mitadAncho) {
-			this.x = entorno.ancho() - mitadAncho;
-		}
-		//Arriba
-		if (this.y < limiteInterfaz + mitadAlto) {
-			this.y = limiteInterfaz + mitadAlto;
-		}
-		//Abajo
-		if (this.y > entorno.alto() - mitadAlto) {
-			this.y = entorno.alto() - mitadAlto;
-		}
+	public double getRadioColision() {
+		return Constantes.REPARTIDOR_RADIO;
 	}
-
-	public void procesarMovimiento(Entorno entorno, Manzana[] cuadra) {
-		//Movimiento de la moto eje x
-		double xAnterior = this.getX();
-		double anguloAnterior = this.getAngulo();
-
-		if(entorno.estaPresionada('d')) {
-			this.moverDerecha();
-		}
-		if(entorno.estaPresionada('a')) {
-			this.moverIzquierda();
-		}
-		//Colision eje x
-		for(int i = 0; i < cuadra.length; i++) {
-			if(cuadra[i] != null) {
-				if(choca(this, cuadra[i])) {
-					this.setX(xAnterior);
-					this.setAngulo(anguloAnterior);
-				}
-			}
-		}
-
-		//Movimiento de la moto eje y
-		double yAnterior = this.getY();
-		anguloAnterior = this.getAngulo();
-
-		if(entorno.estaPresionada('w')) {
-			this.moverArriba();
-		}
-		if(entorno.estaPresionada('s')) {
-			this.moverAbajo();
-		}
-
-		//Colision eje y
-		for(int i = 0; i < cuadra.length; i++) {
-			if(cuadra[i] != null) {
-				if(choca(this, cuadra[i])) {
-					this.setY(yAnterior);
-					this.setAngulo(anguloAnterior);
-				}
-			}
-		}
-	}
-
-	private boolean choca(Moto m, Manzana a) {
-		//Cada borde de la moto
-		double radioMoto = Constantes.REPARTIDOR_RADIO;
-		double bordeDerMoto = m.getX() + radioMoto;
-		double bordeIzqMoto = m.getX() - radioMoto;
-		double bordeSupMoto = m.getY() - radioMoto;
-		double bordeInfMoto = m.getY() + radioMoto;
-
-		//Bordes de la cuadra
-		double bordeDerCuadra = a.getX() + (a.getAncho() / 2) ;
-		double bordeIzqCuadra = a.getX() - (a.getAncho() / 2) ;
-		double bordeArrbCuadra = a.getY() - (a.getAlto() / 2) - Constantes.MANZANA_ARRIBA_OFFSET;
-		double bordeAbjCuadra = a.getY() + (a.getAlto() / 2) - Constantes.MANZANA_ABAJO_OFFSET;
-
-		return bordeDerMoto > bordeIzqCuadra && bordeIzqMoto < bordeDerCuadra && bordeInfMoto > bordeArrbCuadra && bordeSupMoto < bordeAbjCuadra;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
-
 
 
