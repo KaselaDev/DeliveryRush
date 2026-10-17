@@ -1,6 +1,5 @@
 package juego;
 
-import java.awt.Color;
 import java.awt.Image;
 
 import entorno.Entorno;
@@ -22,7 +21,7 @@ public class Manzana {
 	}
 	
 	public void dibujar(Entorno entorno) {
-		entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.green);
+		// entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.green);
 		entorno.dibujarImagen(this.imagen, this.x, this.y, 0,0.1);
 	}
 	

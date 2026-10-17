@@ -2,6 +2,7 @@ package juego;
 
 
 import java.awt.Color;
+import java.util.Random;
 
 import entorno.Entorno;
 import entorno.InterfaceJuego;
@@ -10,57 +11,41 @@ public class Juego extends InterfaceJuego
 {
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
-	
-	Moto moto;
-	Manzana[] cuadra;
-	Casa[] casas;
-	
 	// Variables y métodos propios de cada grupo
+	private Moto moto;
+	private Manzana[] cuadra;
+	private Casa[] casas;
+	private Disparo disparo;
+	// private Enemigo[] enemigos;
+
+
+	private Pedido pedidoActual;
+	private int vidas = 3;
+	private int pedidosEntregados = 0;
+	private int pedidosPerdidos = 0;
+	private int enemigosEliminados = 0;
+
+
+	private int anchoPantalla = 1150;
+    private int altoPantalla = 700;
+    private int altoInterfaz = 80;
+    private int filas = 3;
+    private int columnas = 4;
 	// ...
 	
 	Juego()
 	{
 		// Inicializa el objeto entorno
-		this.entorno = new Entorno(this, "Proyecto para TP", 1150, 900);
+		this.entorno = new Entorno(this, "Proyecto para TP", this.anchoPantalla, this.altoPantalla);
 		
 		// Inicializar lo que haga falta para el juego
-		// ...
+	
 		//Moto
-		this.moto = new Moto(580,800);
+		this.moto = new Moto(this.anchoPantalla / 2, this.altoPantalla - 35);
 
-		//Casa
-		this.casas = new Casa[64];
-		int c = 0;
-		//Manzana
-		this.cuadra = new Manzana[16];
+		inicializarMapa();
+		this.pedidoActual = new Pedido(this.casas);
 
-		int k = 0;
-		int ancho = 175;
-		int alto = 100;
-		int separacionAncho = 260;
-		int separacionAlto = 190;
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				double posX = 185 + (j * separacionAncho);
-				double posY = 220 + (i * separacionAlto);
-				this.cuadra[k++] = new Manzana(posX, posY, ancho, alto);
-
-				double offsetX = 45; 
-        		double offsetY = 25;
-
-				// Casa arriba izquierda
-				this.casas[c++] = new Casa(posX - offsetX, posY - offsetY, 0, 0);
-				// Casa arriba derecha
-				this.casas[c++] = new Casa(posX + offsetX, posY - offsetY, 0 ,0);
-				// Casa abajo izquierda
-				this.casas[c++] = new Casa(posX - offsetX, posY + offsetY, 0, 0);
-				// Casa abajo derecha
-				this.casas[c++] = new Casa(posX + offsetX, posY + offsetY, 0, 0);
-			}
-		}
-		
-		
-		
 		// Inicia el juego!
 		this.entorno.iniciar();
 	}
@@ -75,46 +60,42 @@ public class Juego extends InterfaceJuego
 	{
 		// Procesamiento de un instante de tiempo
 		// ...
-		// interfaz
-		entorno.dibujarRectangulo(500, 50, 1300, 100, 0, Color.black);
 		//Mapa
 		entorno.colorFondo(Color.gray);
-		
-		for(Manzana m:this.cuadra) {
-				m.dibujar(entorno);
-			}
-		
-		for(Casa c: this.casas){
-			c.dibujar(entorno);
-		}
-		
-		
-	
-		//Colision con limite de pantalla
+		dibujarMapa();
 
-		double mitadAncho = this.moto.getAncho() / 2;
-		double mitadAlto = this.moto.getAlto() / 2;
-		double limiteInterfaz = 100;
+		// gestion del epdido
+       if (this.pedidoActual != null) {
+            String estadoAnterior = this.pedidoActual.getEstado();
+            this.pedidoActual.actualizarTiempo();
+            this.pedidoActual.dibujarIndicador(this.entorno);
 
-		//Izquierdo
-		if (this.moto.x < mitadAncho) {
-    		this.moto.x = mitadAncho;
-		}
-		//Derecho
-		if (this.moto.x > entorno.ancho() - mitadAncho) {
-    		this.moto.x = entorno.ancho() - mitadAncho;
-		}
-		//Arriba
-		if (this.moto.y < limiteInterfaz + mitadAlto) {
-    		this.moto.y = limiteInterfaz + mitadAlto;
-		}
-		//Abajo
-		if (this.moto.y > entorno.alto() - mitadAlto) {
-    		this.moto.y = entorno.alto() - mitadAlto;
-		}
-	
+            // sumo uno a perdido por el tiempo
+            if (!estadoAnterior.equals("Perdido") && this.pedidoActual.getEstado().equals("Perdido")) {
+                this.pedidosPerdidos++;
+            }
 
+            // aparece siguiente pedido
+            if (this.pedidoActual.listoParaSiguiente()) {
+                this.pedidoActual = new Pedido(this.casas);
+            }
+        }
 
+        // agarrar y entregar pedido con click derecho
+        if (this.entorno.sePresionoBoton(this.entorno.BOTON_DERECHO) && this.pedidoActual != null) {
+            if (this.pedidoActual.interactuar(this.moto)) {
+                this.pedidosEntregados++;
+            }
+        }
+
+        // agarrar o entregar pedido con click derecho
+        if (this.entorno.sePresionoBoton(this.entorno.BOTON_DERECHO) && this.pedidoActual != null) {
+            if (this.pedidoActual.interactuar(this.moto)) {
+                this.pedidosEntregados++;
+            }
+        }
+		
+		
 		//Movimiento de la moto eje x
 		double xAnterior = this.moto.getX();
 		double anguloAnterior = this.moto.getAngulo();
@@ -126,13 +107,9 @@ public class Juego extends InterfaceJuego
 			moto.moverIzquierda();
 		}
 		//Colision eje x
-		for(int i = 0; i < this.cuadra.length; i++) {
-    		if(this.cuadra[i] != null) {
-        		if(choca(this.moto, this.cuadra[i])) {
-            		this.moto.setX(xAnterior);
-            		this.moto.setAngulo(anguloAnterior);
-				}
-			}
+		if (this.moto.colisionaConMapa(this.cuadra)) {
+   			this.moto.setX(xAnterior);
+    		this.moto.setAngulo(anguloAnterior);
 		}
 
 		//Movimiento de la moto eje y
@@ -147,17 +124,29 @@ public class Juego extends InterfaceJuego
 		}
 
 		//Colision eje y
-		for(int i = 0; i < this.cuadra.length; i++) {
-			if(this.cuadra[i] != null) {
-				if(choca(this.moto, this.cuadra[i])) {
-					this.moto.setY(yAnterior);
-					this.moto.setAngulo(anguloAnterior);
-				}
-			}
+		if (this.moto.colisionaConMapa(this.cuadra)) {
+			this.moto.setY(yAnterior);
+			this.moto.setAngulo(anguloAnterior);
 		}
+		
+		this.moto.mantenerDentroDePantalla(this.anchoPantalla, this.altoPantalla, this.altoInterfaz);
 
+		// Disparo moto
+		if (this.entorno.sePresionoBoton(this.entorno.BOTON_IZQUIERDO) && this.disparo == null) {
+            this.disparo = new Disparo(this.moto.getX(), this.moto.getY(), this.moto.getAngulo());
+        }
 
+        if (this.disparo != null) {
+            this.disparo.mover();
+            this.disparo.dibujar(this.entorno);
+
+            if (this.disparo.salioDePantalla(this.entorno) || this.disparo.chocaConCuadra(this.cuadra)) {
+                this.disparo = null;
+            }
+        }
+		dibujarInterfaz();
 		moto.dibujar(entorno);
+		
 
 		
 
@@ -165,28 +154,87 @@ public class Juego extends InterfaceJuego
 		
 		
 	}
+
+	//METODOS AUXILIARES
+
+	private void inicializarMapa() {
+        this.cuadra = new Manzana[this.filas * this.columnas];
+        this.casas = new Casa[this.filas * this.columnas * 4];
+
+        double anchoManzana = 180;
+        double altoManzana = 110;
+        double separacionX = 260; // Deja calles verticales de 80px
+        double separacionY = 180; // Deja calles horizontales de 70px
+        
+        double inicioX = 185;
+        double inicioY = 210;
+
+        double tamanoCasa = 40;
+        double offsetX = 40;
+        double offsetY = 25;
+
+        int indexCuadra = 0;
+        int indexCasa = 0;
+        Random random = new Random();
+
+        for (int i = 0; i < this.filas; i++) {
+            for (int j = 0; j < this.columnas; j++) {
+                double posX = inicioX + (j * separacionX);
+                double posY = inicioY + (i * separacionY);
+
+                this.cuadra[indexCuadra++] = new Manzana(posX, posY, anchoManzana, altoManzana);
+
+                // Elijo al azar cuál de las 4 esquinas va a ser el negocio
+                int esquinaNegocio = random.nextInt(4);
+
+                // 0: Casa arriba-izquierda
+                this.casas[indexCasa++] = new Casa(posX - offsetX, posY - offsetY, tamanoCasa, tamanoCasa, Math.PI, esquinaNegocio == 0);
+                // 1: Casa arriba-derecha
+                this.casas[indexCasa++] = new Casa(posX + offsetX, posY - offsetY, tamanoCasa, tamanoCasa, Math.PI, esquinaNegocio == 1);
+                // 2: Casa abajo-izquierda
+                this.casas[indexCasa++] = new Casa(posX - offsetX, posY + offsetY, tamanoCasa, tamanoCasa, 0, esquinaNegocio == 2);
+                // 3: Casa abajo-derecha
+                this.casas[indexCasa++] = new Casa(posX + offsetX, posY + offsetY, tamanoCasa, tamanoCasa, 0, esquinaNegocio == 3);
+            }
+        }
+    }
+
+
+	private void dibujarMapa() {
+        for (int i = 0; i < this.cuadra.length; i++) {
+            if (this.cuadra[i] != null) {
+                this.cuadra[i].dibujar(this.entorno);
+            }
+        }
+        for (int i = 0; i < this.casas.length; i++) {
+            if (this.casas[i] != null) {
+                this.casas[i].dibujar(this.entorno);
+            }
+        }
+    }
+
 	
-	//Colision moto con las cuadras
-	private boolean choca(Moto m, Manzana a) {
-		//Cada borde de la moto
-		double radioMoto = 18;
-		double bordeDerMoto = m.getX() + radioMoto;
-	    double bordeIzqMoto = m.getX() - radioMoto;
-	    double bordeSupMoto = m.getY() - radioMoto;
-	    double bordeInfMoto = m.getY() + radioMoto;
-	    
-	    //Bordes de la cuadra
-	    double bordeDerCuadra = a.getX() + (a.getAncho() / 2) ;
-	    double bordeIzqCuadra = a.getX() - (a.getAncho() / 2) ;
-	    double bordeArrbCuadra = a.getY() - (a.getAlto() / 2) - 15;
-	    double bordeAbjCuadra = a.getY() + (a.getAlto() / 2) - 10;
-	    
-	    return bordeDerMoto > bordeIzqCuadra && bordeIzqMoto < bordeDerCuadra && bordeInfMoto > bordeArrbCuadra && bordeSupMoto < bordeAbjCuadra;
-	    
-	}
+
+
 	
-	
-	
+	private void dibujarInterfaz() {
+        this.entorno.dibujarRectangulo(this.entorno.ancho() / 2, 40, this.entorno.ancho(), this.altoInterfaz, 0, Color.BLACK);
+        this.entorno.cambiarFont("Arial", 16, Color.WHITE);
+        
+        int segundos = this.entorno.tiempo() / 1000;
+        String textoEstado = this.pedidoActual.getEstado();
+        
+        if (textoEstado.equals("En espera") || textoEstado.equals("En camino")) {
+            textoEstado += " (" + this.pedidoActual.getSegundosRestantes() + "s)";
+        }
+
+        this.entorno.escribirTexto(
+            "Tiempo: " + segundos + "s  |  Entregados: " + this.pedidosEntregados + 
+            "  |  Perdidos: " + this.pedidosPerdidos + "  |  Pedido: " + textoEstado, 
+            30, 45
+        );
+    }
+
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args)
