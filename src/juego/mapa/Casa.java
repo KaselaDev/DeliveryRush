@@ -1,6 +1,7 @@
 package juego.mapa;
 
 import java.awt.Image;
+import java.util.Random;
 
 import entorno.Entorno;
 import entorno.Herramientas;
@@ -26,7 +27,8 @@ public class Casa {
 		this.alto = alto;
 		this.angulo = angulo;
 		this.esNegocio = esNegocio;
-		this.imagen = Herramientas.cargarImagen("imagenes/casa1.png");
+		int estiloCasa = new Random().nextInt(5) + 1;
+		this.imagen = Herramientas.cargarImagen("imagenes/casas/"+estiloCasa+".png");
 		this.entorno = e;
 	}
 

@@ -40,9 +40,9 @@ public class Manzana {
 		// Casa arriba derecha
 		this.casas[1] = new Casa(x + offsetX, y - offsetY - 5, ancho, alto, 0, idNegocio == 1, this.entorno);
 		// Casa abajo izquierda
-		this.casas[2] = new Casa(x - offsetX, y + offsetY - 10, ancho, alto, 0, idNegocio == 2, this.entorno);
+		this.casas[2] = new Casa(x - offsetX, y + offsetY - 15, ancho, alto, 0, idNegocio == 2, this.entorno);
 		// Casa abajo derecha
-		this.casas[3] = new Casa(x + offsetX, y + offsetY - 10, ancho, alto, 0, idNegocio == 3, this.entorno);
+		this.casas[3] = new Casa(x + offsetX, y + offsetY - 15, ancho, alto, 0, idNegocio == 3, this.entorno);
 	}
 
 	public void dibujar() {
