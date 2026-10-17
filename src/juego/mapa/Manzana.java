@@ -36,13 +36,13 @@ public class Manzana {
 		double offsetY = 25;
 
 		// Casa arriba izquierda
-		this.casas[0] = new Casa(x - offsetX, y - offsetY - 5, ancho, alto, 0, idNegocio == 0, this.entorno);
+		this.casas[0] = new Casa(x - offsetX, y - offsetY - 5, ancho, alto, 0, idNegocio == 0, this.entorno, "izquierda");
 		// Casa arriba derecha
-		this.casas[1] = new Casa(x + offsetX, y - offsetY - 5, ancho, alto, 0, idNegocio == 1, this.entorno);
+		this.casas[1] = new Casa(x + offsetX, y - offsetY - 5, ancho, alto, 0, idNegocio == 1, this.entorno, "derecha");
 		// Casa abajo izquierda
-		this.casas[2] = new Casa(x - offsetX, y + offsetY - 15, ancho, alto, 0, idNegocio == 2, this.entorno);
+		this.casas[2] = new Casa(x - offsetX, y + offsetY - 15, ancho, alto, 0, idNegocio == 2, this.entorno, "frente");
 		// Casa abajo derecha
-		this.casas[3] = new Casa(x + offsetX, y + offsetY - 15, ancho, alto, 0, idNegocio == 3, this.entorno);
+		this.casas[3] = new Casa(x + offsetX, y + offsetY - 15, ancho, alto, 0, idNegocio == 3, this.entorno, "frente");
 	}
 
 	public void dibujar() {
