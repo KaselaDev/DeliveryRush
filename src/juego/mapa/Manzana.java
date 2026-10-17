@@ -32,13 +32,13 @@ public class Manzana {
 		double ancho = this.entorno.getWidth() / (9 * 4);
 		double alto = this.entorno.getHeight() / (9 * 4);
 
-		double offsetX = 40;
+		double offsetX = 38;
 		double offsetY = 25;
 
 		// Casa arriba izquierda
-		this.casas[0] = new Casa(x - offsetX, y - offsetY - 10, ancho, alto, 0, idNegocio == 0, this.entorno);
+		this.casas[0] = new Casa(x - offsetX, y - offsetY - 5, ancho, alto, 0, idNegocio == 0, this.entorno);
 		// Casa arriba derecha
-		this.casas[1] = new Casa(x + offsetX, y - offsetY - 10, ancho, alto, 0, idNegocio == 1, this.entorno);
+		this.casas[1] = new Casa(x + offsetX, y - offsetY - 5, ancho, alto, 0, idNegocio == 1, this.entorno);
 		// Casa abajo izquierda
 		this.casas[2] = new Casa(x - offsetX, y + offsetY - 10, ancho, alto, 0, idNegocio == 2, this.entorno);
 		// Casa abajo derecha
@@ -46,7 +46,7 @@ public class Manzana {
 	}
 
 	public void dibujar() {
-		this.entorno.dibujarImagen(this.imagen, this.x, this.y, 0,0.1);
+		this.entorno.dibujarImagen(this.imagen, this.x, this.y, 0,0.09);
 	}
 
 	//getters para la colision
