@@ -33,4 +33,8 @@ public class MenuPantalla {
 		// dibujarBoton("SALIR", entorno.ancho() / 2, 450);
 		new ButtonsMaster(entorno, 450, 450, 400, 300, "Jugar");
 	}
+
+	public void actualizar() {
+		
+	}
 }

@@ -6,20 +6,20 @@ import java.util.Random;
 import juego.entidades.Moto;
 import juego.mapa.Manzana;
 import juego.mapa.Casa;
+import juego.mapa.Calle;
 import juego.util.Constantes;
 
 public class JuegoPantalla {
 	private Entorno entorno;
 	private Moto moto;
-	private Manzana[] cuadra;
-	private Casa[] casas;
-	private int filas = 4;
-	private int columnas = 4;
+	private Object[] celdas; // Puede ser Calle o Manzana
+	private int filas = 9;
+	private int columnas = 9;
 	private double altoInterfaz = 80;
+	private final Random random = new Random();
 
 	public JuegoPantalla(Entorno entorno) {
 		this.entorno = entorno;
-		this.entorno.colorFondo(new Color(60, 60, 60));
 		inicializar();
 	}
 
@@ -28,6 +28,7 @@ public class JuegoPantalla {
 		inicializarMapa();
 	}
 
+	// JuegoPantalla.java
 	public void dibujar() {
 		dibujarInterfaz();
 		dibujarMapa();
@@ -48,59 +49,60 @@ public class JuegoPantalla {
 	// METODOS AUXILIARES
 
 	private void inicializarMapa() {
-		this.cuadra = new Manzana[this.filas * this.columnas];
-		this.casas = new Casa[this.filas * this.columnas * 4];
+		this.celdas = new Object[this.filas * this.columnas];
 
-		double anchoManzana = 180;
-		double altoManzana = 110;
-		double separacionX = 260;
-		double separacionY = 180;
+		double anchoCelda = entorno.ancho() / this.columnas;
+		double altoCelda = (entorno.alto() - this.altoInterfaz) / this.filas;
 
-		double inicioX = 185;
-		double inicioY = 210;
-
-		double tamanoCasa = 40;
-		double offsetX = 40;
-		double offsetY = 25;
-
-		int indexCuadra = 0;
-		int indexCasa = 0;
-		Random random = new Random();
+		int indexCelda = 0;
 
 		for (int i = 0; i < this.filas; i++) {
 			for (int j = 0; j < this.columnas; j++) {
-				double posX = inicioX + (j * separacionX);
-				double posY = inicioY + (i * separacionY);
+				double x = (j * anchoCelda) + (anchoCelda / 2);
+				double y = (i * altoCelda) + (altoCelda / 2) + this.altoInterfaz;
 
-				this.cuadra[indexCuadra++] = new Manzana(posX, posY, anchoManzana, altoManzana);
-
-				int esquinaNegocio = random.nextInt(4);
-
-				this.casas[indexCasa++] = new Casa(posX - offsetX, posY - offsetY, tamanoCasa, tamanoCasa, Math.PI, esquinaNegocio == 0);
-				this.casas[indexCasa++] = new Casa(posX + offsetX, posY - offsetY, tamanoCasa, tamanoCasa, Math.PI, esquinaNegocio == 1);
-				this.casas[indexCasa++] = new Casa(posX - offsetX, posY + offsetY, tamanoCasa, tamanoCasa, 0, esquinaNegocio == 2);
-				this.casas[indexCasa++] = new Casa(posX + offsetX, posY + offsetY, tamanoCasa, tamanoCasa, 0, esquinaNegocio == 3);
+				if(i%2 != 0) {
+					if(j%2 == 0){
+						this.celdas[indexCelda++] = new Calle(x, y, anchoCelda, altoCelda, i, j);
+					} else {
+						this.celdas[indexCelda++] = new Manzana(x, y, anchoCelda, altoCelda, this.entorno);
+					}
+				} else {
+					this.celdas[indexCelda++] = new Calle(x, y, anchoCelda, altoCelda, i, j);
+				}
 			}
 		}
 	}
 
 	private void dibujarMapa() {
-		for (int i = 0; i < this.cuadra.length; i++) {
-			if (this.cuadra[i] != null) {
-				this.cuadra[i].dibujar(this.entorno);
+		// Dibujar celdas (calles o manzanas)
+		for (Object celda : this.celdas) {
+			if (celda != null) {
+				if (celda instanceof Calle) {
+					((Calle) celda).dibujar(this.entorno);
+				}
 			}
 		}
-		for (int i = 0; i < this.casas.length; i++) {
-			if (this.casas[i] != null) {
-				this.casas[i].dibujar(this.entorno);
+
+		for (Object celda : this.celdas) {
+			if (celda != null) {
+				if (celda instanceof Manzana) {
+					Manzana m = ((Manzana) celda);
+					((Manzana) celda).dibujar();
+					for(Casa casa : m.getCasas()) {
+						casa.dibujar();
+					}
+				}
 			}
 		}
 	}
 
 	private boolean colisionaConMapa(Moto m) {
-		for (int i = 0; i < this.cuadra.length; i++) {
-			if (this.cuadra[i] != null && choca(m, this.cuadra[i])) {
-				return true;
+		for (Object celda : this.celdas) {
+			if (celda != null && celda instanceof Manzana) {
+				if (choca(m, (Manzana) celda)) {
+					return true;
+				}
 			}
 		}
 		return false;

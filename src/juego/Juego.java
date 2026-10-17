@@ -25,14 +25,11 @@ public class Juego extends InterfaceJuego {
 
 	public void tick() {
 		if (gestorPantallas.esMenu()) {
+			menuPantalla.actualizar();
 			menuPantalla.dibujar();
 		} else if (gestorPantallas.esJuego()) {
 			juegoPantalla.actualizar();
 			juegoPantalla.dibujar();
-		} else if (gestorPantallas.esGameOver()) {
-			// Pantalla game over
-		} else if (gestorPantallas.esVictoria()) {
-			// Pantalla victoria
 		}
 	}
 

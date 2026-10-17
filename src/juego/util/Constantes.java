@@ -40,10 +40,6 @@ public class Constantes {
 	public static final int ENEMIGO_CANTIDAD_MINIMA = 4;
 	public static final double ENEMIGO_VELOCIDAD = 1.5;
 
-	// Bombas
-	public static final double BOMBA_RADIO = 30.0;
-	public static final int BOMBA_DANIO = 1;
-
 	// Proyectiles
 	public static final double PROYECTIL_VELOCIDAD = 4.0;
 	public static final double PROYECTIL_RADIO = 5.0;

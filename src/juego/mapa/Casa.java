@@ -11,14 +11,15 @@ public class Casa {
 	double ancho;
 	double alto;
 	Image imagen;
+	Entorno entorno;
 	private double angulo;
 	private boolean esNegocio;
 
-	public Casa(double x, double y, double ancho, double alto) {
-		this(x, y, ancho, alto, 0, false);
+	public Casa(double x, double y, double ancho, double alto, Entorno e) {
+		this(x, y, ancho, alto, 0, false, e);
 	}
 
-	public Casa(double x, double y, double ancho, double alto, double angulo, boolean esNegocio) {
+	public Casa(double x, double y, double ancho, double alto, double angulo, boolean esNegocio, Entorno e) {
 		this.x = x;
 		this.y = y;
 		this.ancho = ancho;
@@ -26,10 +27,11 @@ public class Casa {
 		this.angulo = angulo;
 		this.esNegocio = esNegocio;
 		this.imagen = Herramientas.cargarImagen("imagenes/casa1.png");
+		this.entorno = e;
 	}
 
-	public void dibujar(Entorno entorno) {
-		entorno.dibujarImagen(this.imagen, this.x, this.y, this.angulo, 0.33);
+	public void dibujar() {
+		this.entorno.dibujarImagen(this.imagen, this.x, this.y, this.angulo, 0.33);
 	}
 
 	public boolean isEsNegocio() {

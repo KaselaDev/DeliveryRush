@@ -16,8 +16,8 @@ public class Bomba {
 	public Bomba(double x, double y) {
 		this.x = x;
 		this.y = y;
-		this.radio = Constantes.BOMBA_RADIO;
-		this.danio = Constantes.BOMBA_DANIO;
+		this.radio = 1;
+		this.danio = 1;
 		this.activa = true;
 		// this.imagen = Herramientas.cargarImagen("imagenes/bomba.png");
 		this.imagen = null; // Temporalmente null hasta que exista la imagen

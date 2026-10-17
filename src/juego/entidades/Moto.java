@@ -29,7 +29,6 @@ public class Moto {
 
 		};
 	
-
 	public void dibujar(Entorno entorno) {
 		if (this.angulo == 0) {
 			entorno.dibujarImagen(this.motoArriba, this.x, this.y, 0, 0.130);
