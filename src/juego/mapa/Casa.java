@@ -20,7 +20,8 @@ public class Casa {
 		this(x, y, ancho, alto, 0, false, e, direccion);
 	}
 
-	public Casa(double x, double y, double ancho, double alto, double angulo, boolean esNegocio, Entorno e, String direccion) {
+	public Casa(double x, double y, double ancho, double alto, double angulo, boolean esNegocio, Entorno e,
+			String direccion) {
 		this.x = x;
 		this.y = y;
 		this.ancho = ancho;
@@ -32,17 +33,18 @@ public class Casa {
 	}
 
 	public void setImage(String d) {
-		int estiloCasa = new Random().nextInt(5) + 1;
+		int estiloCasa = this.esNegocio ? new Random().nextInt(4) + 1 : new Random().nextInt(5) + 1; // Genera un número
+		String tipo = this.esNegocio ? "negocios" : "casas";
 		switch (d) {
-				case "izquierda":
-						this.imagen = Herramientas.cargarImagen("imagenes/casas/"+estiloCasa+"-izquierda.png");
-						break;
-				case "derecha":
-						this.imagen = Herramientas.cargarImagen("imagenes/casas/"+estiloCasa+"-derecha.png");
-						break;
-				default:
-						this.imagen = Herramientas.cargarImagen("imagenes/casas/"+estiloCasa+".png");
-						break;
+			case "izquierda":
+				this.imagen = Herramientas.cargarImagen("imagenes/" + tipo + "/" + estiloCasa + "-izquierda.png");
+				break;
+			case "derecha":
+				this.imagen = Herramientas.cargarImagen("imagenes/" + tipo + "/" + estiloCasa + "-derecha.png");
+				break;
+			default:
+				this.imagen = Herramientas.cargarImagen("imagenes/" + tipo + "/" + estiloCasa + ".png");
+				break;
 		}
 	}
 
@@ -52,5 +54,13 @@ public class Casa {
 
 	public boolean isEsNegocio() {
 		return esNegocio;
+	}
+
+	public double getX() {
+		return this.x;
+	}
+
+	public double getY() {
+		return this.y;
 	}
 }

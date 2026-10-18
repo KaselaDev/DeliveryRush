@@ -41,7 +41,7 @@ public class Constantes {
 	public static final double ENEMIGO_VELOCIDAD = 1.5;
 
 	// Proyectiles
-	public static final double PROYECTIL_VELOCIDAD = 4.0;
+	public static final double PROYECTIL_VELOCIDAD = 6.0;
 	public static final double PROYECTIL_RADIO = 5.0;
 
 	// Colisiones
