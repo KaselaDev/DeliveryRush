@@ -21,6 +21,16 @@ public class ButtonsMaster {
 	private Color color;
 	private Image imagen;
 
+	public ButtonsMaster(double x, double y, double width, double height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.texto = "";
+		this.estaActivado = true;
+		this.color = new Color(0, 0, 0, 0);
+	}
+
 	public ButtonsMaster(Entorno entorno, double x, double y, double width, double height, String texto) {
 		this.x = x;
 		this.y = y;

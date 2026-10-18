@@ -19,6 +19,7 @@ public class Moto {
 	public Image motoDerecha;
 	public Image motoIzquierda;
 	public double radioColision;
+	public int vidas;
 
 	public Moto(double x, double y) {
 		this.x = x;
@@ -30,7 +31,7 @@ public class Moto {
 		this.motoAbajo = Herramientas.cargarImagen("imagenes/abajo.png");
 		this.motoDerecha = Herramientas.cargarImagen("imagenes/derecha.png");
 		this.motoIzquierda = Herramientas.cargarImagen("imagenes/izquierda.png");
-
+		this.vidas = Constantes.REPARTIDOR_VIDAS_INICIALES;
 		};
 	
 	public void dibujar(Entorno entorno) {
@@ -97,6 +98,9 @@ public class Moto {
 
 	public double getRadioColision() {
 		return this.radioColision;
+	}
+	public int getVidas() {
+		return this.vidas;
 	}
 
 	// La moto choca con una cuadra.
