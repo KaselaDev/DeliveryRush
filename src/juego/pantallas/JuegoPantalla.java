@@ -8,6 +8,7 @@ import juego.mapa.Manzana;
 import juego.mapa.Casa;
 import juego.mapa.Calle;
 import juego.mapa.Pedido;
+import juego.gui.cabecera.Cabecera;
 
 public class JuegoPantalla {
 	private Entorno entorno;
@@ -46,7 +47,8 @@ public class JuegoPantalla {
 		if (this.moto != null) {
 			this.moto.dibujar(this.entorno);
 		}
-		dibujarInterfaz();
+		Cabecera cabecera = new Cabecera(this.entorno, this.moto.getVidas(), this.pedidosEntregados, this.pedidosPerdidos, this.pedidoActual.getEstado(), this.pedidoActual.getSegundosRestantes());
+		cabecera.dibujarInterfaz();
 	}
 
 	public void actualizar() {
@@ -135,21 +137,6 @@ public class JuegoPantalla {
 
 	private boolean colisionaConMapa(Moto m) {
 		return m.colisionaConMapa(this.cuadras);
-	}
-
-	private void dibujarInterfaz() {
-		this.entorno.dibujarRectangulo(this.entorno.ancho() / 2, 40, this.entorno.ancho(), this.altoInterfaz, 0, Color.BLACK);
-		this.entorno.cambiarFont("Arial", 16, Color.WHITE);
-		int segundos = this.entorno.tiempo() / 1000;
-		String textoEstado = this.pedidoActual.getEstado();
-		if ("En espera".equals(textoEstado) || "En camino".equals(textoEstado)) {
-			textoEstado += " (" + this.pedidoActual.getSegundosRestantes() + "s)";
-		}
-
-		this.entorno.escribirTexto(
-				"Tiempo: " + segundos + "s  |  Entregados: " + this.pedidosEntregados
-						+ "  |  Perdidos: " + this.pedidosPerdidos + "  |  Pedido: " + textoEstado,
-				30, 45);
 	}
 
 	private void procesarMovimientoMoto() {
