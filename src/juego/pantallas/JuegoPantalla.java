@@ -9,6 +9,8 @@ import juego.mapa.Casa;
 import juego.mapa.Calle;
 import juego.mapa.Pedido;
 import juego.gui.cabecera.Cabecera;
+import juego.util.ButtonsMaster;
+import juego.util.Constantes;
 
 public class JuegoPantalla {
 	private Entorno entorno;
@@ -23,6 +25,13 @@ public class JuegoPantalla {
 	private int filas = 9;
 	private int columnas = 9;
 	private double altoInterfaz = 80;
+	private boolean pausado;
+	private boolean relojIniciado;
+	private int tiempoInicio;
+	private int inicioPausa;
+	private long tiempoPausado;
+	private final ButtonsMaster botonPausa = new ButtonsMaster(
+			1102, Constantes.LIMITE_INTERFAZ / 2, 78, Constantes.LIMITE_INTERFAZ - 24);
 
 	public JuegoPantalla(Entorno entorno) {
 		this.entorno = entorno;
@@ -47,11 +56,31 @@ public class JuegoPantalla {
 		if (this.moto != null) {
 			this.moto.dibujar(this.entorno);
 		}
-		Cabecera cabecera = new Cabecera(this.entorno, this.moto.getVidas(), this.pedidosEntregados, this.pedidosPerdidos, this.pedidoActual.getEstado(), this.pedidoActual.getSegundosRestantes());
+		if (this.pausado) {
+			this.dibujarPausa();
+		}
+		Cabecera cabecera = new Cabecera(this.entorno, this.moto.getVidas(), this.pedidosEntregados,
+				this.pedidosPerdidos, this.pedidoActual.getEstado(),
+				this.pedidoActual.getSegundosRestantes(), this.getTiempoJuegoMillis(), this.pausado);
 		cabecera.dibujarInterfaz();
 	}
 
 	public void actualizar() {
+		if (!this.relojIniciado) {
+			this.tiempoInicio = this.entorno.tiempo();
+			this.relojIniciado = true;
+		}
+
+		boolean escapePresionado = this.entorno.sePresiono(this.entorno.TECLA_ESCAPE);
+		boolean clickPausa = this.entorno.sePresionoBoton(this.entorno.BOTON_IZQUIERDO)
+				&& this.botonPausa.verificarClick(this.entorno.mouseX(), this.entorno.mouseY());
+		if (escapePresionado || clickPausa) {
+			this.alternarPausa();
+		}
+		if (this.pausado) {
+			return;
+		}
+
 		if (this.pedidoActual != null) {
 			String estadoAnterior = this.pedidoActual.getEstado();
 			this.pedidoActual.actualizarTiempo();
@@ -72,7 +101,34 @@ public class JuegoPantalla {
 		procesarMovimientoMoto();
 		this.moto.mantenerDentroDePantalla(
 				this.entorno.ancho(), this.entorno.alto(), (int) this.altoInterfaz);
-		procesarDisparo();
+		procesarDisparo(!clickPausa);
+	}
+
+	private void alternarPausa() {
+		if (this.pausado) {
+			this.tiempoPausado += this.entorno.tiempo() - this.inicioPausa;
+			this.pausado = false;
+		} else {
+			this.inicioPausa = this.entorno.tiempo();
+			this.pausado = true;
+		}
+	}
+
+	private long getTiempoJuegoMillis() {
+		int tiempoActual = this.pausado ? this.inicioPausa : this.entorno.tiempo();
+		return Math.max(0L, (long) tiempoActual - this.tiempoInicio - this.tiempoPausado);
+	}
+
+	private void dibujarPausa() {
+		int centroX = this.entorno.ancho() / 2;
+		int centroY = this.entorno.alto() / 2;
+		this.entorno.dibujarRectangulo(centroX, centroY, this.entorno.ancho(), this.entorno.alto(), 0,
+				new Color(0, 0, 0, 70));
+		this.entorno.dibujarRectangulo(centroX, centroY, 520, 170, 0, new Color(1, 35, 31, 245));
+		this.entorno.cambiarFont("Arial", 34, Color.WHITE, this.entorno.NEGRITA);
+		this.entorno.escribirTexto("JUEGO EN PAUSA", centroX - 150, centroY - 8);
+		this.entorno.cambiarFont("Arial", 18, Color.YELLOW);
+		this.entorno.escribirTexto("Presiona ESC para continuar", centroX - 130, centroY + 35);
 	}
 
 	// METODOS AUXILIARES
@@ -171,8 +227,9 @@ public class JuegoPantalla {
 		}
 	}
 
-	private void procesarDisparo() {
-		if (this.entorno.sePresionoBoton(this.entorno.BOTON_IZQUIERDO) && this.disparo == null) {
+	private void procesarDisparo(boolean permitirNuevoDisparo) {
+		if (permitirNuevoDisparo && this.entorno.sePresionoBoton(this.entorno.BOTON_IZQUIERDO)
+				&& this.disparo == null) {
 			this.disparo = new Disparo(this.moto.getX(), this.moto.getY(), this.moto.getAngulo());
 		}
 

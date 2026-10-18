@@ -20,19 +20,24 @@ public class Cabecera {
     private int pedidosPerdidos;
     private String estadoPedido;
     private int tiempoRestantePedido;
+    private long tiempoJuegoMillis;
+    private boolean pausado;
     private int altoInterfaz;
     private Color colorFondo = new Color(1, 35, 31);
     private Color colorCard = new Color(255, 200, 0);
     private int fontSizeL = 16;
     private int fontSizeS = 12;
 
-    public Cabecera(Entorno entorno, int vidaMoto, int pedidosRealizados, int pedidosPerdidos, String estadoPedido, int tiempoRestantePedido) {
+    public Cabecera(Entorno entorno, int vidaMoto, int pedidosRealizados, int pedidosPerdidos,
+            String estadoPedido, int tiempoRestantePedido, long tiempoJuegoMillis, boolean pausado) {
         this.entorno = entorno;
         this.vidaMoto = vidaMoto;
         this.pedidosRealizados = pedidosRealizados;
         this.pedidosPerdidos = pedidosPerdidos;
         this.estadoPedido = estadoPedido;
         this.tiempoRestantePedido = tiempoRestantePedido;
+        this.tiempoJuegoMillis = tiempoJuegoMillis;
+        this.pausado = pausado;
         this.altoInterfaz = Constantes.LIMITE_INTERFAZ;
     }
 
@@ -43,6 +48,7 @@ public class Cabecera {
         this.cardPedidosRealizados();
         this.cardPedidosPerdidos();
         this.cardEstadoPedidos();
+        this.cardPausa();
 	}
 
     private void decorarCard(int xR, int yR, int anchoR, int altoR) {
@@ -62,7 +68,7 @@ public class Cabecera {
     }
 
     private void cardTiempo() {
-        int segundos = this.entorno.tiempo() / 1000;
+        int segundos = (int) (this.tiempoJuegoMillis / 1000);
         int x = 90;
         int y = this.altoInterfaz / 2;
         int ancho = 160;
@@ -158,6 +164,21 @@ public class Cabecera {
         this.entorno.escribirTexto("Estado del Pedido", xTexto, y - 4);
         this.entorno.cambiarFont(FUENTE_PIXEL, this.fontSizeS, Color.WHITE);
         this.entorno.escribirTexto(this.estadoPedido+" ("+this.tiempoRestantePedido+"s)", xTexto, y + 18);
+    }
+
+    private void cardPausa() {
+        int x = 1102;
+        int y = this.altoInterfaz / 2;
+        int ancho = 78;
+        int alto = this.altoInterfaz - 24;
+        this.entorno.dibujarRectangulo(x, y, ancho, alto, 0, new Color(255, 0, 0));
+        this.decorarCard(x, y, ancho, alto);
+
+        Image icon = Herramientas.cargarImagen("imagenes/pausa.png");
+        this.entorno.dibujarImagen(icon, x, y - 2, 0, .1);
+        if (this.pausado) {
+            this.entorno.dibujarRectangulo(x, y, ancho, alto, 0, new Color(0, 0, 0, 40));
+        }
     }
 
     private static String cargarFuentePixel() {
