@@ -27,6 +27,8 @@ public class JuegoPantalla {
 	private double altoInterfaz = 80;
 	private boolean pausado;
 	private boolean relojIniciado;
+	private boolean victoria;
+	private long tiempoFinalMillis;
 	private int tiempoInicio;
 	private int inicioPausa;
 	private long tiempoPausado;
@@ -63,9 +65,16 @@ public class JuegoPantalla {
 				this.pedidosPerdidos, this.pedidoActual.getEstado(),
 				this.pedidoActual.getSegundosRestantes(), this.getTiempoJuegoMillis(), this.pausado);
 		cabecera.dibujarInterfaz();
+		if (this.victoria) {
+			this.dibujarVictoria();
+		}
 	}
 
 	public void actualizar() {
+		if (this.victoria) {
+			return;
+		}
+
 		if (!this.relojIniciado) {
 			this.tiempoInicio = this.entorno.tiempo();
 			this.relojIniciado = true;
@@ -95,6 +104,10 @@ public class JuegoPantalla {
 			if (this.entorno.sePresionoBoton(this.entorno.BOTON_DERECHO)
 					&& this.pedidoActual.interactuar(this.moto)) {
 				this.pedidosEntregados++;
+				if (this.pedidosEntregados >= Constantes.PEDIDOS_PARA_GANAR) {
+					this.tiempoFinalMillis = this.getTiempoJuegoMillis();
+					this.victoria = true;
+				}
 			}
 		}
 
@@ -115,8 +128,25 @@ public class JuegoPantalla {
 	}
 
 	private long getTiempoJuegoMillis() {
+		if (this.victoria) {
+			return this.tiempoFinalMillis;
+		}
 		int tiempoActual = this.pausado ? this.inicioPausa : this.entorno.tiempo();
 		return Math.max(0L, (long) tiempoActual - this.tiempoInicio - this.tiempoPausado);
+	}
+
+	private void dibujarVictoria() {
+		int centroX = this.entorno.ancho() / 2;
+		int centroY = this.entorno.alto() / 2;
+		long segundos = this.tiempoFinalMillis / 1000;
+		this.entorno.dibujarRectangulo(centroX, centroY, this.entorno.ancho(), this.entorno.alto(), 0,
+				new Color(0, 0, 0, 180));
+		this.entorno.dibujarRectangulo(centroX, centroY, 560, 210, 0, new Color(1, 35, 31, 245));
+		this.entorno.cambiarFont("Arial", 40, Color.WHITE, this.entorno.NEGRITA);
+		this.entorno.escribirTexto("¡GANASTE!", centroX - 105, centroY - 25);
+		this.entorno.cambiarFont("Arial", 24, Color.YELLOW);
+		this.entorno.escribirTexto(String.format("Tiempo: %02d:%02d", segundos / 60, segundos % 60),
+				centroX - 105, centroY + 35);
 	}
 
 	private void dibujarPausa() {

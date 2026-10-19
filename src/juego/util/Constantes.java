@@ -14,6 +14,7 @@ public class Constantes {
 	public static final int PANTALLA_JUEGO = 1;
 	public static final int PANTALLA_GAMEOVER = 2;
 	public static final int PANTALLA_VICTORIA = 3;
+	public static final int PEDIDOS_PARA_GANAR = 10;
 
 	// Repartidor
 	public static final double REPARTIDOR_VELOCIDAD = 2.0;
