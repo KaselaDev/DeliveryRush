@@ -12,7 +12,7 @@ import java.io.InputStream;
 import juego.util.Constantes;
 
 public class Cabecera {
-    private static final String FUENTE_PIXEL = cargarFuentePixel();
+    private static String FUENTE_PIXEL = cargarFuentePixel();
 
     private Entorno entorno;
     private int vidaMoto;

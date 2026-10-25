@@ -9,8 +9,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 public class ButtonsMaster {
-	private static final Font FUENTE = new Font("Arial", Font.PLAIN, 24);
-	private static final BufferedImage AUXILIAR = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+	private static Font FUENTE = new Font("Arial", Font.PLAIN, 24);
+	private static BufferedImage AUXILIAR = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
 
 	private double x;
 	private double y;
@@ -66,6 +66,18 @@ public class ButtonsMaster {
 		this.imagen = imagen;
 		this.width = Math.max(imagen.getWidth(null), 0) * escala;
 		this.height = Math.max(imagen.getHeight(null), 0) * escala;
+		dibujar(entorno);
+	}
+
+	public ButtonsMaster(Entorno entorno, double x, double y, double width, double height, Image imagen) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.texto = "";
+		this.estaActivado = true;
+		this.color = new Color(0, 0, 0, 0);
+		this.imagen = imagen;
 		dibujar(entorno);
 	}
 

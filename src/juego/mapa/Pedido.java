@@ -7,9 +7,9 @@ import entorno.Entorno;
 import juego.entidades.Moto;
 
 public class Pedido {
-    private static final int TICKS_LIMITE_PEDIDO = 2000;
-    private static final int TICKS_ESPERA_SIGUIENTE = 150;
-    private static final int TICKS_POR_SEGUNDO = 100;
+    private static int TICKS_LIMITE_PEDIDO = 2000;
+    private static int TICKS_ESPERA_SIGUIENTE = 150;
+    private static int TICKS_POR_SEGUNDO = 100;
 
     private Casa negocioOrigen;
     private Casa casaDestino;
