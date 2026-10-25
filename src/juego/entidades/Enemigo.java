@@ -9,11 +9,10 @@ public class Enemigo {
 	private double x;
 	private double y;
 	private double velocidad;
-	private double angulo;   // igual que la Moto: 0 arriba, Math.PI abajo, Math.PI / 2 derecha, -Math.PI / 2 izquierda
+	private double angulo;
 	private boolean ponedorDeBombas;
 	private int ticksParaBomba;
 	
-	// Las imágenes se cargan una sola vez y las comparten todos los enemigos
 	private static Image enemigo_arriba = Herramientas.cargarImagen("imagenes/enemigoArriba.png");
 	private static Image enemigo_abajo = Herramientas.cargarImagen("imagenes/enemigoAbajo.png");
 	private static Image enemigo_derecha = Herramientas.cargarImagen("imagenes/enemigoDerecha.png");
@@ -28,7 +27,6 @@ public class Enemigo {
 		this.velocidad = Constantes.ENEMIGO_VELOCIDAD;                 
 		this.ponedorDeBombas = Math.random() < Constantes.ENEMIGO_PROBABILIDAD_BOMBA;
 		
-		// el primer tiempo es al azar, así los ponedores no sueltan todas las bombas a la vez
 		this.ticksParaBomba = (int) (Constantes.ENEMIGO_TICKS_BOMBA * (0.3 + 0.7 * Math.random()));
 		
 	}
