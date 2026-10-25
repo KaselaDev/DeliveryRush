@@ -145,7 +145,7 @@ public class Cabecera {
         this.entorno.cambiarFont(FUENTE_PIXEL, this.fontSizeL, Color.WHITE);
         this.entorno.escribirTexto("Perdidos", xTexto, y - 4);
         this.entorno.cambiarFont(FUENTE_PIXEL, this.fontSizeS, Color.WHITE);
-        this.entorno.escribirTexto(this.pedidosPerdidos+" / 10", xTexto + 20, y + 18);
+        this.entorno.escribirTexto(this.pedidosPerdidos+" / "+ Constantes.PEDIDOS_PARA_GANAR, xTexto + 20, y + 18);
     }
 
     private void cardEstadoPedidos() {

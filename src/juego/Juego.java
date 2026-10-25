@@ -12,6 +12,7 @@ public class Juego extends InterfaceJuego {
 	private GestorPantallas gestorPantallas;
 	private MenuPantalla menuPantalla;
 	private JuegoPantalla juegoPantalla;
+	private boolean juegoIniciado;
 
 	Juego() {
 		this.entorno = new Entorno(this, "DeliveryRush", Constantes.VENTANA_ANCHO, Constantes.VENTANA_ALTO);
@@ -24,12 +25,17 @@ public class Juego extends InterfaceJuego {
 	}
 
 	public void tick() {
-		if (gestorPantallas.esMenu()) {
-			menuPantalla.actualizar();
-			menuPantalla.dibujar();
-		} else if (gestorPantallas.esJuego()) {
-			juegoPantalla.actualizar();
-			juegoPantalla.dibujar();
+		if (this.gestorPantallas.esMenu()) {
+			this.juegoIniciado = false;
+			this.menuPantalla.actualizar();
+			this.menuPantalla.dibujar();
+		} else if (this.gestorPantallas.esJuego()) {
+			if (!this.juegoIniciado) {
+				this.juegoPantalla.reiniciar();
+				this.juegoIniciado = true;
+			}
+			this.juegoPantalla.actualizar();
+			this.juegoPantalla.dibujar();
 		}
 	}
 
