@@ -17,8 +17,8 @@ public class Juego extends InterfaceJuego {
 		this.entorno = new Entorno(this, "DeliveryRush", Constantes.VENTANA_ANCHO, Constantes.VENTANA_ALTO);
 
 		this.gestorPantallas = new GestorPantallas();
-		this.menuPantalla = new MenuPantalla(entorno);
-		this.juegoPantalla = new JuegoPantalla(entorno);
+		this.menuPantalla = new MenuPantalla(entorno, this.gestorPantallas);
+		this.juegoPantalla = new JuegoPantalla(entorno, this.gestorPantallas);
 
 		this.entorno.iniciar();
 	}

@@ -12,7 +12,7 @@ import java.io.InputStream;
 import juego.util.Constantes;
 
 public class Cabecera {
-    private static final String FUENTE_PIXEL = cargarFuentePixel();
+    private static String FUENTE_PIXEL = cargarFuentePixel();
 
     private Entorno entorno;
     private int vidaMoto;
@@ -127,7 +127,7 @@ public class Cabecera {
         this.entorno.cambiarFont(FUENTE_PIXEL, this.fontSizeL, Color.WHITE);
         this.entorno.escribirTexto("Pedidos", xTexto, y - 4);
         this.entorno.cambiarFont(FUENTE_PIXEL, this.fontSizeS, Color.WHITE);
-        this.entorno.escribirTexto(this.pedidosRealizados+" / 10", xTexto + 20, y + 18);
+        this.entorno.escribirTexto(this.pedidosRealizados+" / " + Constantes.PEDIDOS_PARA_GANAR, xTexto + 20, y + 18);
     }
 
     private void cardPedidosPerdidos() {

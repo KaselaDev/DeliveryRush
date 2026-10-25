@@ -1,35 +1,25 @@
 package juego.logica;
 
-import juego.util.Constantes;
-
 public class GestorPantallas {
-	private int pantallaActual;
+	private String pantallaActual;
 
 	public GestorPantallas() {
-		this.pantallaActual = Constantes.PANTALLA_JUEGO;
+		this.pantallaActual = "menu";
 	}
 
-	public void cambiarPantalla(int nuevaPantalla) {
+	public void cambiarPantalla(String nuevaPantalla) {
 		this.pantallaActual = nuevaPantalla;
 	}
 
-	public int getPantallaActual() {
+	public String getPantallaActual() {
 		return pantallaActual;
 	}
 
 	public boolean esMenu() {
-		return pantallaActual == Constantes.PANTALLA_MENU;
+		return pantallaActual == "menu";
 	}
 
 	public boolean esJuego() {
-		return pantallaActual == Constantes.PANTALLA_JUEGO;
-	}
-
-	public boolean esGameOver() {
-		return pantallaActual == Constantes.PANTALLA_GAMEOVER;
-	}
-
-	public boolean esVictoria() {
-		return pantallaActual == Constantes.PANTALLA_VICTORIA;
+		return pantallaActual == "juego";
 	}
 }
