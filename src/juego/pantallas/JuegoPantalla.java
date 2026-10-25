@@ -426,6 +426,14 @@ public class JuegoPantalla {
 		}
 		this.ultimoDanioMillis = ahora;
 		this.moto.perderVida();
+		
+		if (this.pedidoActual != null && 
+			("En espera".equals(this.pedidoActual.getEstado()) || 
+			 "En camino".equals(this.pedidoActual.getEstado()))) {
+			this.pedidoActual.perder();
+			this.pedidosPerdidos++;
+			this.pedidoActual = new Pedido(this.casas);
+		}
 	}
 
 	private void procesarMovimientoMoto() {
@@ -504,7 +512,7 @@ public class JuegoPantalla {
 		this.entorno.escribirTexto("Presiona R para reiniciar", textX, centroY + 80);
 	}
 
-	private void reiniciar() {
+	public void reiniciar() {
 		this.derrota = false;
 		this.victoria = false;
 		this.pausado = false;

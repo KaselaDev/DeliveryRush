@@ -35,16 +35,13 @@ public class Casa {
 	public void setImage(String d) {
 		int estiloCasa = this.esNegocio ? new Random().nextInt(4) + 1 : new Random().nextInt(5) + 1; // Genera un número
 		String tipo = this.esNegocio ? "negocios" : "casas";
-		switch (d) {
-			case "izquierda":
-				this.imagen = Herramientas.cargarImagen("imagenes/" + tipo + "/" + estiloCasa + "-izquierda.png");
-				break;
-			case "derecha":
-				this.imagen = Herramientas.cargarImagen("imagenes/" + tipo + "/" + estiloCasa + "-derecha.png");
-				break;
-			default:
-				this.imagen = Herramientas.cargarImagen("imagenes/" + tipo + "/" + estiloCasa + ".png");
-				break;
+		String imagePath = "imagenes/" + tipo + "/" + estiloCasa + (d != "frente" ? "-"+d : "") + ".png";
+		System.out.println("imagePath: "+ imagePath);
+		this.imagen = Herramientas.cargarImagen(imagePath);
+		if (this.imagen == null) {
+			System.out.println("No se pudo cargar la imagen: " + imagePath);
+			// Cargar imagen de fallback
+			this.imagen = Herramientas.cargarImagen("imagenes/casa1.png");
 		}
 	}
 
