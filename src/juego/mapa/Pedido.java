@@ -1,9 +1,10 @@
 package juego.mapa;
 
-import java.awt.Color;
+import java.awt.Image;
 import java.util.Random;
 
 import entorno.Entorno;
+import entorno.Herramientas;
 import juego.entidades.Moto;
 
 public class Pedido {
@@ -78,20 +79,40 @@ public class Pedido {
     }
 
     public void dibujarIndicador(Entorno entorno) {
-        double animacion = Math.sin(this.ticksRestantes * 0.1) * 5;
-        double distanciaFlotante = 32 + animacion;
         if ("En espera".equals(this.estado)) {
-            this.dibujarFlecha(entorno, this.negocioOrigen, distanciaFlotante, Color.YELLOW);
+            this.dibujarFlecha(entorno, this.negocioOrigen, "imagenes/flechaAmarilla.png");
         } else if ("En camino".equals(this.estado)) {
-            this.dibujarFlecha(entorno, this.casaDestino, distanciaFlotante, Color.GREEN);
+            this.dibujarFlecha(entorno, this.casaDestino, "imagenes/flechaVerde.png");
         }
     }
 
-    private void dibujarFlecha(Entorno entorno, Casa casa, double distancia, Color color) {
-        double x = casa.x;
-        double y = casa.y - distancia;
-        entorno.dibujarTriangulo(x, y + 11, 14, 12, Math.PI / 2, color);
-        entorno.dibujarRectangulo(x, y, 4, 12, Math.PI, color);
+    private void dibujarFlecha(Entorno entorno, Casa casa, String imagenPath) {
+        double x = casa.getZonaInteraccionX();
+        double y = casa.getZonaInteraccionY();
+        Image flecha = Herramientas.cargarImagen(imagenPath);
+        
+        double angulo = 0;
+        switch(casa.getDirecciones()) {
+            case "frente":
+                angulo = Math.PI; // Apunta hacia abajo
+                break;
+            case "atras":
+                angulo = 0; // Apunta hacia arriba
+                break;
+            case "izquierda":
+                angulo = -Math.PI / 2; // Apunta hacia la derecha
+                break;
+            case "derecha":
+                angulo = Math.PI / 2; // Apunta hacia la izquierda
+                break;
+            default:
+                angulo = 0;
+                break;
+        }
+        
+        if (flecha != null) {
+            entorno.dibujarImagen(flecha, x, y, angulo, 2.25);
+        }
     }
 
     public boolean interactuar(Moto m) {
@@ -99,9 +120,9 @@ public class Pedido {
             throw new IllegalArgumentException("La moto no puede ser nula.");
         }
 
-        if ("En espera".equals(this.estado) && m.estaCercaDe(this.negocioOrigen)) {
+        if ("En espera".equals(this.estado) && this.negocioOrigen.zonaDeInteraccion(m.getX(), m.getY())) {
             this.retirar();
-        } else if ("En camino".equals(this.estado) && m.estaCercaDe(this.casaDestino)) {
+        } else if ("En camino".equals(this.estado) && this.casaDestino.zonaDeInteraccion(m.getX(), m.getY())) {
             this.entregar();
             return true;
         }

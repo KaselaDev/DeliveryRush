@@ -260,6 +260,9 @@ public class JuegoPantalla {
 					((Manzana) celda).dibujar();
 					for(Casa casa : m.getCasas()) {
 						casa.dibujar();
+						if(Constantes.HITBOX_ZONA_ENTREGA) {
+							casa.dibujarZonaInteraccion();
+						}
 					}
 				}
 			}
