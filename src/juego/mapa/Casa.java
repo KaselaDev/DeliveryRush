@@ -48,7 +48,7 @@ public class Casa {
 	}
 
 	public void dibujar() {
-		this.entorno.dibujarImagen(this.imagen, this.x, this.y, this.angulo, 0.31);
+		this.entorno.dibujarImagen(this.imagen, this.x, this.y, this.angulo, 0.27);
 	}
 
 	public boolean isEsNegocio() {

@@ -40,13 +40,13 @@ public class Moto {
 
 	public void dibujar(Entorno entorno) {
 		if (this.angulo == 0) {
-			entorno.dibujarImagen(this.motoArriba, this.x, this.y, 0, 0.170);
+			entorno.dibujarImagen(this.motoArriba, this.x, this.y, 0, 0.105);
 		} else if (this.angulo == Math.PI) {
-			entorno.dibujarImagen(this.motoAbajo, this.x, this.y, 0, 0.170);
+			entorno.dibujarImagen(this.motoAbajo, this.x, this.y, 0, 0.105);
 		} else if (this.angulo == Math.PI / 2) {
-			entorno.dibujarImagen(this.motoDerecha, this.x, this.y, 0, 0.170);
+			entorno.dibujarImagen(this.motoDerecha, this.x, this.y, 0, 0.105);
 		} else if (this.angulo == -Math.PI / 2) {
-			entorno.dibujarImagen(this.motoIzquierda, this.x, this.y, 0, 0.170);
+			entorno.dibujarImagen(this.motoIzquierda, this.x, this.y, 0, 0.105);
 		}
 	}
 	
