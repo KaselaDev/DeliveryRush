@@ -62,4 +62,7 @@ public class Constantes {
 	// Tiempos
 	public static long TIEMPO_ESPERA_PARPADEO = 2000;
 	public static long TIEMPO_CIERRE_OJOS = 500;
+	
+	// MODO DEV
+	public static boolean HITBOX_ZONA_ENTREGA = false;
 }
